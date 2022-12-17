@@ -1,0 +1,35 @@
+name: Lint Tests 🙌
+on:
+  pull_request:
+    branches: [main]
+jobs:
+  lint:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        node: [16, 18]
+    name: Test lint and build project
+    steps:
+      # Clone this repo
+      - name: Checkout repo 🔍
+        uses: actions/checkout@v3
+
+      # Install Node.js
+      - name: Staring Node.js ${{ matrix.node }} 🔧
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+
+      # Install dependencies
+      - name: Install modules 🔧
+        run: npm ci
+
+      # Run tests
+      - name: test eslint 🔨
+        run: npm run test-eslint
+      - name: test prettier 🔨
+        run: npm run test-prettier
+
+      # Build tests
+      - name: test build project 🔨
+        run: npm run build
